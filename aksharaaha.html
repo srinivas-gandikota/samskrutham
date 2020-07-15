@@ -1,0 +1,145 @@
+
+
+
+<html>
+
+
+<body>
+
+<center>
+<input type=text id=srcText />
+<input type=button value="Parse" onclick=parseText() />
+
+<div id=out> </div>
+<div id=tab > </div>
+</center>
+
+<script>
+
+function parseText() {
+   var txt = document.getElementById("srcText").value.trim();
+   var out = document.getElementById("out");
+   var str = " ";
+
+   for (i=0; i<txt.length; i++) {
+
+       chcode = txt.charCodeAt(i)
+       chstr  = String.fromCharCode(chcode);
+       if (i < txt.length -1) {
+        nextch = String.fromCharCode(txt.charCodeAt(i+1));
+        suffix = "+"
+       } else {
+        nextch = 'अ';
+        suffix = " "
+       }
+
+
+       //str += " "+String.fromCharCode(cur)+"\u094d + ";
+       if (chcode < 0x900 || chcode > 0x97f)
+          str += ""+chstr+"";
+       else if (swaraMatra.has(chstr))
+            str += ""+chstr+" "+suffix;
+       else if (matraSwara.has(chstr)) {
+           if (nextch == anuswara || nextch == visarga) {
+               str += ""+matraSwara.get(chstr)+nextch+" "+suffix;
+               i++;
+           } else {
+                str += ""+matraSwara.get(chstr)+" "+suffix;
+           }
+       }
+       else if (chstr  == halanth)
+            str += chstr+suffix;
+       //else if (isVyanjan(nextch)) {
+       else if (!matraSwara.has(nextch) && nextch != halanth) {
+           str += " "+chstr+halanth+"+अ "+suffix;
+           //i++;
+       }
+       else if (nextch == halanth)
+            str += " "+chstr
+       else
+            str += " "+chstr+halanth+suffix;
+   }
+   out.innerHTML = "<p><font size=20>"+str+" = "+txt+"</font>"
+   
+
+}
+
+function printDChars() {
+    var tab = document.getElementById("tab");inc
+    var start = 0x900;
+    var inc = 0;
+    var str=' <table style="font-size:20"><tr>';
+for (i = 0; i <27; i++) {
+    for (j = 0; j < 5; j++) {
+        var ca = start+inc;
+        str += '<td style="background-color: #00FFFF;font-size:30" >'+ String.fromCharCode(ca) +"</td>"
+            +" <td>"+inc+"</td><td>  0x"+ca.toString(16).toUpperCase()+" </td> <td>&nbsp; </td>";
+        //String sc = new String(ca);
+        //System.out.print(sc + " ");
+        inc++;
+        if (inc == 21 || inc == 58) break;
+        
+    }
+    //System.out.println();
+    str += "</tr><tr>"
+}
+    tab.innerHTML = "<p><font size=30><mark>" + str;
+}
+printDChars();
+</script>
+
+
+<script>
+//Database
+var halanth = "्"
+var anuswara = "ं"
+var visarga = "ः"
+var swaraMatra = new Map([
+    ['अ','ा'],
+    ['आ','ा'],
+    ['इ','ि'],
+    ['ई','ी'],
+    ['उ','ु'],
+    ['ऊ','ू'],
+    ['ऋ','ृ'],
+    ['ऌ','ॄ'],
+    ['ए','े'],
+    ['ऐ','ै'],
+    ['ओ','ो'],
+    ['औ','ौ'],
+    ['अं', '\u0902'],
+    ['अः','\u0903']
+])
+
+
+let matraSwara = new Map([...swaraMatra.entries()].map(
+  ([key, value]) => ([value, key]))
+);
+
+var swara = [ 'अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ऌ', 'ए', 'ऐ', 'ओ', 'औ']
+var vyanjan = [ 
+                'क', 'ख', 'ग', 'घ', 'ङ', 
+                'च', 'छ', 'ज', 'झ', 'ञ', 
+                'ट', 'ठ', 'ड', 'ढ', 'ण', 
+                'त', 'थ', 'द', 'ध', 'न', 
+                'प', 'फ', 'ब', 'भ', 'म', 
+                'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह'
+               ];
+
+function isVyanjan(ch) {
+    if (vyanjan.indexOf(ch) == -1)
+        return false;
+
+     return true;
+}
+</script>
+
+
+<script>
+//Test code
+var out = document.getElementById("out");
+//out.innerHTML = swaraMatra.get('इ');
+</script>
+</body>
+
+</html>

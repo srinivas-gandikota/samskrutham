@@ -140,7 +140,7 @@ function printKeyboard() {
         swaraRow += "<td>"+key+" </td>"
         matraRow += "<td>"+value+" </td>"
         inc++;
-        if (inc == 7) {
+        if (inc == 8) {
             swaraTable += "<tr>"+swaraRow+"</tr><tr>"+matraRow+"</tr>"
                         +"<tr><td colspan=15></td></tr>"+"<tr><td colspan=15></td></tr>"
             swaraRow=""
@@ -221,14 +221,16 @@ var visarga = "ः"
 var samyukta = "््"
 var chandrabindu = "ँ"
 var swaraMatra = new Map([
-    ['अ','ा'],
+    ['अ',' '],
     ['आ','ा'],
     ['इ','ि'],
     ['ई','ी'],
     ['उ','ु'],
     ['ऊ','ू'],
     ['ऋ','ृ'],
-    ['ऌ','ॄ'],
+    ['ॠ','ॄ'],
+    ['ऌ','ॢ'],
+    ['ॡ','ॣ'],
     ['ए','े'],
     ['ऐ','ै'],
     ['ओ','ो'],

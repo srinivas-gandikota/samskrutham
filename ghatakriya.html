@@ -1,0 +1,147 @@
+
+<html>
+<head>
+
+<style>
+
+table {
+    background-color: #FFFFFF;
+    font-size:30;
+    font-family:Arial;
+    text-align:right;
+    border-spacing:20;
+    padding:40;
+
+}
+
+table td.dis {
+  background-color: #00FFFF;
+  font-size:40;
+  font-spacing:400;
+  font-family:courier;
+  letter-spacing:6pt;
+  cell-spacing:20;
+  padding:10;
+  text-align:right;
+  border: 1px solid black; 
+  //width:600
+}
+
+.bcell {
+    border-bottom-style:dashed;
+    font-family:arial;
+    letter-spacing:6pt;
+    font-size:40;
+}
+</style>
+</head>
+
+<body>
+
+<div align=center>
+<input type=text id="base" >
+<input type=button value="Compute Square" onclick=displaySquare()>
+
+</div>
+<div id="out" align=center>
+
+</div>
+
+<script>
+
+var base = 1234;
+
+function computeSquare(base) {
+
+    var rem = base;
+    var step = 1;
+    var square = 0;
+    var place = 1;
+    while (rem) {
+        digit = rem%10;
+        rem = (rem-digit)/10;
+        //if (rem < 1) rem = 0;
+
+        digitSquare = digit*digit;
+        remMultiple = 2*rem*digit;
+        displayStep(step, digit, digitSquare, remMultiple, rem);
+        square += digitSquare*place;
+        square += remMultiple*place*10;
+
+        //do this carefully
+        place = place*100;
+        step++; 
+
+    }
+
+   return square;
+}
+
+function displayProblem(base) {
+
+    outputBlock = document.getElementById("out");
+    outputBlock.innerHTML = "<table border=0 id=resultTable ><tr><td> Steps </td><td>Description</td>"
+                        +"<td class=bcell >"+base+"</td>"
+                        +"</tr></table>";
+
+
+}
+
+function displayStep(step, digit, digitSquare, remMultiple, rem) {
+    outputBlock = document.getElementById("resultTable");
+
+    //outputBlock.innerHTML += "<tr><td>"+step+".1</td><td>"+digitSquare+"</td></tr>";
+    //outputBlock.innerHTML += "<tr><td>"+step+".2</td><td>"+remMultiple+"</td></tr>";
+    spacechar="&nbsp;"
+    spacing = ""
+    for (i=0; i<(step-1)*2; i++)
+        spacing += spacechar;
+    
+    itbl = document.getElementById("resultTable")
+    newrow = itbl.insertRow()
+    newrow.innerHTML="<td>"+(step*2-1)+"</td><td> square("+digit+")</td>"
+                    +"<td class=dis>"+digitSquare+spacing+"</td>"
+    /*
+    cell = newrow.insertCell(0)
+    cell.innerHTML=step+".1"
+    cell = newrow.insertCell(1)
+    cell.innerHTML="<p align=right>"+digitSquare+spacing+"</p>";
+    cell.class = "dis"
+    */
+
+
+    if (rem) {
+    newrow = itbl.insertRow()
+    newrow.innerHTML="<td>"+step*2+"</td><td> 2 x "+rem+" x "+digit+"</td>"
+                    +"<td class=dis>"+remMultiple+spacing+spacechar+"</td>"
+    }
+    /*
+    newrow.insertCell(0).innerHTML=step+".2"
+    newrow.insertCell(1).innerHTML="<p align=right>"+remMultiple+spacing+"</p>";
+    */
+
+}
+
+function displayResult(square) {
+
+    itbl = document.getElementById("resultTable")
+    newrow = itbl.insertRow()
+    newrow.innerHTML="<td></td><td>Result</td>"
+                    +"<td class=dis>"+square+"</td>"
+}
+
+function displaySquare() {
+    base = document.getElementById("base").value;
+
+    displayProblem(base);
+    square = computeSquare(base);
+    displayResult(square);
+
+}
+document.getElementById("base").value=234;
+displaySquare();
+</script>
+
+
+</body>
+</html>

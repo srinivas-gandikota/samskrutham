@@ -1,0 +1,127 @@
+
+
+<html>
+
+<head>
+
+<script src="samskrutham_dict.js" charset="utf-8"> </script>
+
+<style>
+
+table.vib, .head {
+    background-color: #FFFFFF;
+    font-size:30;
+    font-family:Arial;
+    text-align:right;
+    border-spacing:20;
+    padding:40;
+    border: 1px solid black;
+
+}
+
+table.vib td.vib, .padam {
+  background-color: #00FFFF;
+  font-size:40;
+  font-spacing:400;
+  font-family:courier;
+  letter-spacing:2pt;
+  cell-spacing:20;
+  padding:10;
+  text-align:right;
+  border: 1px solid black; 
+  //width:600
+}
+
+</style>
+
+
+</head>
+
+<body>
+
+<center>
+<div id=vib_select> 
+
+<table border=2 class=vib> <tr>
+<td>
+Anthya Swaram
+<select name="swara" id="swara" class=padam onChange=selectVibhakti()>
+    <option value="अ">अ</option>
+    <option value="इ">इ</option>
+    <option value="उ">उ</option>
+</select>
+</td>
+
+<td>
+Lingam
+<select name="lingam" id="lingam" class=padam onChange=selectVibhakti()>
+    <option value="पुलिंग">पुलिंग</option>
+    <option value="सत्रिलिंग">सत्रिलिंग</option>
+    <option value="नपुंसकलिंग">नपुंसकलिंग</option>
+</select>
+</td>
+</tr></table>
+
+</div>
+<div id=vib_display> </div>
+</center>
+
+
+<script>
+
+function displayVibhakthi(vibInfo) {
+    var vib_head = "<span class=head>" 
+                   + "<span class=padam>"+vibInfo.suffix+"</span> "+"कारांत "
+                   + "<span class=padam>" + vibInfo.lingam+ "</span> "
+                   + "<span class=padam>" + vibInfo.shabdam + "</span>" + " शब्दः " 
+                   + "("+vibInfo.meaning+")"
+                   + "</span>"
+    var vib_tbl = "<table class=vib>";
+    var vibhakti = vibInfo.vibhakti;
+
+    vib_tbl += "<tr class=head><td>Vibhakthi</td><td>Eka</td><td>Dvi</td><td>Bahu</td></tr>";
+    for (vib in vibhakti) {
+        var tbl_str = "<tr class=head><td>"+vib+"</td>"
+        //"<td>"+vibhakti[vib][0]+"</td><td>"+vibhakti[vib][1]+"</td><td>"+vibhakti[vib][2]+"</td></tr>";
+        for (i=0; i<3; i++)
+            tbl_str += "<td class=vib>"+vibhakti[vib][i]+"</td>";
+        tbl_str += "</tr>"
+        
+        vib_tbl += tbl_str;
+    }
+    vib_tbl += "</table>"
+
+    var out = document.getElementById("vib_display");
+    out.innerHTML = vib_head + vib_tbl;
+}
+
+function selectVibhakti() {
+
+//displayVibhakthi(vibhakthis[3]);
+    var selectedSwara = document.getElementById("swara").value;
+    var selectedLingam = document.getElementById("lingam").value;
+
+    //search vibhaktis based on selected Swara and Linga 
+    var found = false;
+    for ( x in vibhakthis) {
+        vibinfo = vibhakthis[x];
+        if (vibinfo.suffix == selectedSwara && vibinfo.lingam == selectedLingam) {
+            displayVibhakthi(vibinfo);
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        //TODO: Display : Work in progress
+        displayVibhakthi(vibhakthis[0]);
+    }
+}
+
+selectVibhakti();
+
+</script>
+
+
+</body>
+
+</html>

@@ -32,6 +32,9 @@ table.vib td.vib, .padam {
   //width:600
 }
 
+.vdef {
+    font-size:20;
+}
 </style>
 
 
@@ -44,7 +47,7 @@ table.vib td.vib, .padam {
 
 <table border=2 class=vib> <tr>
 <td>
-Anthya Swaram
+<label id=swara_head>Anthya Swaram </label>
 <select name="swara" id="swara" class=padam onChange=selectVibhakti()>
     <option value="अ">अ</option>
     <option value="इ">इ</option>
@@ -53,7 +56,7 @@ Anthya Swaram
 </td>
 
 <td>
-Lingam
+<label id=linga_head> Lingam </label>
 <select name="lingam" id="lingam" class=padam onChange=selectVibhakti()>
     <option value="पुलिंग">पुलिंग</option>
     <option value="स्त्रिलिंग">स्त्रिलिंग</option>
@@ -69,6 +72,8 @@ Lingam
 
 <script>
 
+var curLang = "telugu";
+
 function displayVibhakthi(vibInfo) {
     var vib_head = "<span class=head>" 
                    + "<span class=padam>"+vibInfo.suffix+"</span> "+"कारांत "
@@ -78,10 +83,12 @@ function displayVibhakthi(vibInfo) {
                    + "</span>"
     var vib_tbl = "<table class=vib>";
     var vibhakti = vibInfo.vibhakti;
+    var headDesc = vibhaktiDescription[curLang];
 
-    vib_tbl += "<tr class=head><td>Vibhakthi</td><td>Eka</td><td>Dvi</td><td>Bahu</td></tr>";
+    vib_tbl += "<tr class=head><td>"+headDesc["vibhakti"]+"</td><td>"
+                +headDesc["eka"]+"</td><td>"+headDesc["dvi"]+"</td><td>"+headDesc["bahu"]+"</td></tr>";
     for (vib in vibhakti) {
-        var tbl_str = "<tr class=head><td>"+vib+"</td>"
+        var tbl_str = "<tr class=head><td>"+headDesc[vib][0]+"<br><span class=vdef>"+headDesc[vib][1]+"</span></td>"
         //"<td>"+vibhakti[vib][0]+"</td><td>"+vibhakti[vib][1]+"</td><td>"+vibhakti[vib][2]+"</td></tr>";
         for (i=0; i<3; i++)
             tbl_str += "<td class=vib>"+vibhakti[vib][i]+"</td>";
@@ -117,8 +124,18 @@ function selectVibhakti() {
     }
 }
 
-selectVibhakti();
+function updateLabels() {
+    document.getElementById("swara_head").innerHTML = vibhaktiDescription[curLang].anthya[0];
+    document.getElementById("linga_head").innerHTML = vibhaktiDescription[curLang].linga[0];
 
+}
+function initAll() {
+
+    updateLabels();
+    selectVibhakti();
+}
+
+initAll();
 </script>
 
 

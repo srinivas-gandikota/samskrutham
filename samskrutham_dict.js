@@ -65,7 +65,7 @@ var vibhaktiDescription =
       }
 
 //Sabdhamanjari
-var vibhakthis =
+var vibhaktiList =
 
   [
 

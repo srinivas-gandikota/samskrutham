@@ -48,7 +48,7 @@ table.vib td.vib, .padam {
 <table border=2 class=vib> <tr>
 <td>
 <label id=swara_head>Anthya Swaram </label>
-<select name="swara" id="swara" class=padam onChange=selectVibhakti()>
+<select name="sel_swara" id="sel_swara" class=padam onChange=onUserSelection()>
     <option value="all" >All</option>
     <option value="अ" selected>अ</option>
     <option value="इ">इ</option>
@@ -58,7 +58,7 @@ table.vib td.vib, .padam {
 
 <td>
 <label id=linga_head> Lingam </label>
-<select name="lingam" id="lingam" class=padam onChange=selectVibhakti()>
+<select name="sel_lingam" id="sel_lingam" class=padam onChange=onUserSelection()>
     <option value="all" >All</option>
     <option value="पुलिंग" selected>पुलिंग</option>
     <option value="स्त्रिलिंग">स्त्रिलिंग</option>
@@ -68,10 +68,10 @@ table.vib td.vib, .padam {
 
 <td>
 <label id=vib_head> Vibhakti </label>
-<select name="sel_vib" id="sel_vib" class=padam onChange=selectVibhakti()>
+<select name="sel_vib" id="sel_vib" class=padam onChange=onUserSelection()>
     <option value="all" selected>All</option>
     <option value="prathama"></option>
-    <option value="sambhodan"></option>
+    <option value="sambhodana"></option>
     <option value="dvitiya"></option>
     <option value="trutiya"></option>
     <option value="chaturthi"></option>
@@ -134,8 +134,8 @@ function getVibhakthiRow(vibInfo, selectedVibhakti) {
 function displaySelectVibhakthi(selectedSwara, selectedLingam, selectedVibhakti) {
     var tbl_str = "<table class=vib>"
       // Search select Vibhakti and filter by swara and linga
-      for ( x in vibhakthis) {
-        vibinfo = vibhakthis[x];
+      for ( x in vibhaktiList) {
+        vibinfo = vibhaktiList[x];
         if ((vibinfo.suffix != "")
             && (selectedSwara == "all" || vibinfo.suffix == selectedSwara)
             && (selectedLingam == "all" || vibinfo.lingam == selectedLingam)) {
@@ -153,10 +153,10 @@ function displaySelectVibhakthi(selectedSwara, selectedLingam, selectedVibhakti)
       out.innerHTML = vibDesc + tbl_str;
 }
 
-function selectVibhakti() {
+function onUserSelection() {
 
-    var selectedSwara = document.getElementById("swara").value;
-    var selectedLingam = document.getElementById("lingam").value;
+    var selectedSwara = document.getElementById("sel_swara").value;
+    var selectedLingam = document.getElementById("sel_lingam").value;
     var selectedVibhakti = document.getElementById("sel_vib").value;
 
     
@@ -164,14 +164,14 @@ function selectVibhakti() {
     if (selectedVibhakti == "all") {
     //search vibhaktis based on selected Swara and Linga 
     // Display entire Vibhakti Table
-    for ( x in vibhakthis) {
-        vibinfo = vibhakthis[x];
-        if (vibinfo.suffix == selectedSwara && vibinfo.lingam == selectedLingam) {
-            displayVibhakthiTable(vibinfo);
-            found = true;
-            break;
-        }
-    }
+      for ( x in vibhaktiList) {
+          vibinfo = vibhaktiList[x];
+          if (vibinfo.suffix == selectedSwara && vibinfo.lingam == selectedLingam) {
+              displayVibhakthiTable(vibinfo);
+              found = true;
+              break;
+          }
+      }
     } else {
       displaySelectVibhakthi(selectedSwara, selectedLingam, selectedVibhakti)
       found = true;
@@ -180,7 +180,7 @@ function selectVibhakti() {
     
     if (!found) {
         //TODO: Display : Work in progress
-        displayVibhakthiTable(vibhakthis[0]);
+        displayVibhakthiTable(vibhaktiList[0]);
     }
 }
 
@@ -202,7 +202,7 @@ function updateLabels() {
 
 function initAll() {
     updateLabels();
-    selectVibhakti();
+    onUserSelection();
 }
 
 initAll();

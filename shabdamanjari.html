@@ -69,6 +69,15 @@ table.vib td.vib, .padam {
 <body>
 
 <center>
+
+
+<div id=lang_select>
+<select name="sel_lang" id="sel_lang" onChange=updateCurLang()>
+    <option value="telugu" selected>Telugu</option>
+    <option value="samskrutham">Samskrutham</option>
+</select>
+</div>
+
 <div id=vib_select> 
 
 <table border=2 class=vib> <tr>
@@ -130,15 +139,16 @@ table.vib td.vib, .padam {
 var curLang = "telugu";
 
 function displayVibhakthiTable(vibInfo) {
+    var headDesc = vibhaktiDescription[curLang];
     var vib_head = "<span class=head>" 
-                   + "<span class=padam>"+vibInfo.suffix+"</span> "+"कारांत "
+                   + "<span class=padam>"+vibInfo.suffix+"</span> "+headDesc.karanta+" "//"कारांत "
                    + "<span class=padam>" + vibInfo.lingam+ "</span> "
-                   + "<span class=padam>" + vibInfo.shabdam + "</span>" + " शब्दः " 
+                   + "<span class=padam>" + vibInfo.shabdam + "</span> " + headDesc.shabda + " " //" शब्दः " 
                    + "("+vibInfo.meaning+")"
                    + "</span>"
     var vib_tbl = "<table class=vib>";
     var vibhakti = vibInfo.vibhakti;
-    var headDesc = vibhaktiDescription[curLang];
+    
 
     vib_tbl += "<tr class=head><td>"+headDesc["vibhakti"]+"</td><td>"
                 +headDesc["eka"]+"</td><td>"+headDesc["dvi"]+"</td><td>"+headDesc["bahu"]+"</td></tr>";
@@ -236,6 +246,13 @@ function updateLabels() {
           svibopts[x].innerHTML = vibTranslation[val][0];
     }
 
+    slangopts = document.getElementById("sel_lang").options
+    for (x in slangopts) {
+      val = slangopts[x].value;
+
+      if (vibTranslation[val])
+          slangopts[x].innerHTML = vibTranslation[val][0];
+    }
 }
 
 function onWordEvent(index) {
@@ -250,7 +267,7 @@ function onWordEvent(index) {
 }
 function displayWords()
 {
-
+    var headDesc = vibhaktiDescription[curLang];
     var word_tbl = "<table border=0>"
     for ( x in vibhaktiList) {
       vibinfo = vibhaktiList[x];
@@ -258,7 +275,7 @@ function displayWords()
         word_tbl += "<tr><td class='padam wordtip'"
                 +" onclick=onWordEvent('"+x+"') >"
                 +vibinfo.shabdam
-                +"<span> "+vibinfo.suffix+" कारांत "+ vibinfo.lingam+" </span>"
+                +"<span> "+vibinfo.suffix+" "+headDesc.karanta+" "+ vibinfo.lingam+" </span>"
                 +"</td></tr>"
       }
     }
@@ -267,6 +284,12 @@ function displayWords()
     var out = document.getElementById("word_display");
     out.innerHTML = word_tbl;
 }
+
+function updateCurLang() {
+  curLang = document.getElementById("sel_lang").value;
+  initAll();
+}
+
 function initAll() {
     updateLabels();
     onUserSelection();

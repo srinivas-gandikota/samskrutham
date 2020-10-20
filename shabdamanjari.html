@@ -32,6 +32,15 @@ table.vib td.vib, .padam {
   //width:600
 }
 
+.plinga  {
+  background-color: #F0F00F;
+}
+.slinga {
+  background-color: #FF70FF;
+}
+.nlinga {
+  background-color: #D0D0D0;
+}
 .vdef {
     font-size:20;
 }
@@ -138,13 +147,14 @@ table.vib td.vib, .padam {
 
 var curLang = "telugu";
 var prevVibhakti = "all";
+var styleMap = { "पुलिंग":"plinga", "स्त्रिलिंग":"slinga", "नपुंसकलिंग":"nlinga"}
 
 function displayVibhakthiTable(vibInfo) {
     var headDesc = vibhaktiDescription[curLang];
     var vib_head = "<span class=head>" 
                    + "<span class=padam>"+vibInfo.suffix+"</span> "+headDesc.karanta+" "//"कारांत "
                    + "<span class=padam>" + vibInfo.lingam+ "</span> "
-                   + "<span class=padam>" + vibInfo.shabdam + "</span> " + headDesc.shabda + " " //" शब्दः " 
+                   + "<span class='padam "+styleMap[vibInfo.lingam]+"'>" + vibInfo.shabdam + "</span> " + headDesc.shabda + " " //" शब्दः " 
                    + "("+vibInfo.meaning+")"
                    + "</span>"
     var vib_tbl = "<table class=vib>";
@@ -157,7 +167,7 @@ function displayVibhakthiTable(vibInfo) {
         var tbl_str = "<tr class=head><td>"+headDesc[vib][0]+"<br><span class=vdef>"+headDesc[vib][1]+"</span></td>"
         //"<td>"+vibhakti[vib][0]+"</td><td>"+vibhakti[vib][1]+"</td><td>"+vibhakti[vib][2]+"</td></tr>";
         for (i=0; i<3; i++)
-            tbl_str += "<td class=vib>"+vibhakti[vib][i]+"</td>";
+            tbl_str += "<td class='vib "+styleMap[vibInfo.lingam]+" '>"+vibhakti[vib][i]+"</td>";
         tbl_str += "</tr>"
         
         vib_tbl += tbl_str;
@@ -175,7 +185,7 @@ function getVibhakthiRow(vibInfo, selectedVibhakti) {
 
     var row_str = "<tr><td>"+vib_head+"</td>"
     for (i=0; i<3; i++)
-        row_str += "<td class=vib>"+vibInfo.vibhakti[selectedVibhakti][i]+"</td>";
+        row_str += "<td class='padam "+styleMap[vibInfo.lingam]+" '>"+vibInfo.vibhakti[selectedVibhakti][i]+"</td>";
     row_str += "</tr>"
    return row_str;
 }
@@ -281,7 +291,7 @@ function displayWords()
     for ( x in vibhaktiList) {
       vibinfo = vibhaktiList[x];
       if (vibinfo.suffix != "") {
-        word_tbl += "<tr><td class='padam wordtip'"
+        word_tbl += "<tr><td class='padam wordtip "+styleMap[vibinfo.lingam]+" '"
                 +" onclick=onWordEvent('"+x+"') >"
                 +vibinfo.shabdam
                 +"<span> "+vibinfo.suffix+" "+headDesc.karanta+" "+ vibinfo.lingam+" </span>"

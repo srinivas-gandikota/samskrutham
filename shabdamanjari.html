@@ -137,6 +137,7 @@ table.vib td.vib, .padam {
 <script>
 
 var curLang = "telugu";
+var prevVibhakti = "all";
 
 function displayVibhakthiTable(vibInfo) {
     var headDesc = vibhaktiDescription[curLang];
@@ -221,10 +222,17 @@ function onUserSelection() {
           }
       }
     } else {
+      if (prevVibhakti == "all") {
+        selectedSwara = "all";
+        selectedLingam = "all";
+        document.getElementById("sel_swara").value = selectedSwara;
+        document.getElementById("sel_lingam").value = selectedLingam;
+      }
+
       displaySelectVibhakthi(selectedSwara, selectedLingam, selectedVibhakti)
       found = true;
     }
-
+    prevVibhakti = selectedVibhakti;
     
     if (!found) {
         //TODO: Display : Work in progress
@@ -263,6 +271,7 @@ function onWordEvent(index) {
     document.getElementById("sel_swara").value = vibinfo.suffix;
     document.getElementById("sel_lingam").value = vibinfo.lingam;
     document.getElementById("sel_vib").value="all"
+    prevVibhakti = "all";
 
 }
 function displayWords()

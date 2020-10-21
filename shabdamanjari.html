@@ -95,6 +95,7 @@ table.vib td.vib, .padam, .spadam {
 </select>
 <input type=checkbox id=sel_simwords onChange=onShowWordsEvent()>
 <label id=simwords_head for=sel_simwords> Show Similar Shabdas </label>
+<input type=button value="Don't Try" onclick=displacePage()>
 </div>
 
 <div id=vib_select> 
@@ -454,6 +455,58 @@ function generateSimilarVibhakti(vibInfo, newWord) {
 }
 </script>
 
+
+<script>
+
+function teluguDisplacement(inStr) {
+  var outStr = "";
+  var tmagic = 768;
+
+   for (i=0; i<inStr.length; i++) {
+     chcode = inStr.charCodeAt(i);
+     if (chcode >= 0x900 && chcode <= 0x97f) {
+       outStr += String.fromCharCode(chcode+tmagic);
+     } else {
+       outStr += String.fromCharCode(chcode);
+     }
+   }
+
+  return outStr;
+}
+
+function traverseDOMTree(rootNode) {
+
+  var nodeList = [];
+
+  nodeList.push(rootNode);
+  while(nodeList.length > 0) {
+      curnode = nodeList.pop();
+      if (curnode.hasChildNodes()) { //curnode.childNodes.length > 0) {
+        //add childNodes to nodeList
+        for (x=0; x < curnode.childNodes.length; x++) {
+          nodeList.push(curnode.childNodes[x]);
+        }
+      } else {
+        //at terminal node 
+        //check/override text
+        val = curnode.nodeValue;
+        if (val != null) {
+          curnode.nodeValue = teluguDisplacement(val);
+        }
+      }
+  }
+}
+function displacePage() {
+
+    var topNode = document.getElementById("vib_display");
+    traverseDOMTree(topNode);
+    topNode = document.getElementById("word_display");
+    traverseDOMTree(topNode);
+    topNode = document.getElementById("vib_select");
+    traverseDOMTree(topNode);
+
+}
+</script>
 </body>
 
 </html>

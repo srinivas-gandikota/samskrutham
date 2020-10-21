@@ -5,6 +5,7 @@
 <head>
 
 <script src="samskrutham_dict.js" charset="utf-8"> </script>
+<script src="samskrutham_eg.js" charset="utf-8"> </script>
 
 <style>
 
@@ -171,6 +172,7 @@ function displayVibhakthiTable(vibInfo) {
                    + "</span>"
     var vib_tbl = "<table class=vib>";
     var vibhakti = vibInfo.vibhakti;
+    var vibhaktiExample = getVibhakthiExamples(vibInfo.shabdam).vibhakti;
     
 
     vib_tbl += "<tr class=head><td>"+headDesc["vibhakti"]+"</td><td>"
@@ -178,8 +180,12 @@ function displayVibhakthiTable(vibInfo) {
     for (vib in vibhakti) {
         var tbl_str = "<tr class=head><td>"+headDesc[vib][0]+"<br><span class=vdef>"+headDesc[vib][1]+"</span></td>"
         //"<td>"+vibhakti[vib][0]+"</td><td>"+vibhakti[vib][1]+"</td><td>"+vibhakti[vib][2]+"</td></tr>";
-        for (i=0; i<3; i++)
-            tbl_str += "<td class='vib "+styleMap[vibInfo.lingam]+" '>"+vibhakti[vib][i]+"</td>";
+        for (i=0; i<3; i++) {
+            tbl_str += "<td class='vib wordtip "+styleMap[vibInfo.lingam]+" '>"
+                    +vibhakti[vib][i]
+                    +"<span> "+vibhaktiExample[vib][i]+"</span>"
+                    +" </td>";
+        }
         tbl_str += "</tr>"
         
         vib_tbl += tbl_str;
@@ -196,8 +202,13 @@ function getVibhakthiRow(vibInfo, selectedVibhakti) {
                     +vibInfo.lingam+" <b>"+vibInfo.shabdam +"</b>"
 
     var row_str = "<tr><td>"+vib_head+"</td>"
-    for (i=0; i<3; i++)
-        row_str += "<td class='padam "+styleMap[vibInfo.lingam]+" '>"+vibInfo.vibhakti[selectedVibhakti][i]+"</td>";
+    var vibhaktiExample = getVibhakthiExamples(vibInfo.shabdam).vibhakti;
+    for (i=0; i<3; i++) {
+        row_str += "<td class='padam wordtip "+styleMap[vibInfo.lingam]+" '>"
+                + vibInfo.vibhakti[selectedVibhakti][i]
+                + "<span>"+vibhaktiExample[selectedVibhakti][i]+"</span>"
+                +"</td>";
+    }
     row_str += "</tr>"
    return row_str;
 }

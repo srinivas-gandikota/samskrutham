@@ -57,6 +57,7 @@ var vibhaktiDescription =
               linga: [ 'లింగం' ], 
               karanta: [ 'కారాంత' ],
               shabda: [ 'శబ్దః' ],
+              ityadi: [ 'ఇలాంటి శబ్దాలు చుపుము' ],
               prathama : [ 'ప్రధమా','డు, ము, వు, లు' ],
               sambhodana: [ 'సంభోధన ప్రధమా','' ],
               dvitiya: [ 'ద్వితీయా','ని, ను, ల, కూర్చి, గురించి' ],
@@ -77,6 +78,7 @@ var vibhaktiDescription =
               linga: [ 'लिंगः' ], 
               karanta: [ 'कारांतः' ],
               shabda: [ 'शब्दः' ],
+              ityadi: [ 'इत्यादि शब्द:' ],
               prathama : [ 'प्रदमा','డు, ము, వు, లు' ],
               sambhodana: [ 'संबोदना प्रदमा','' ],
               dvitiya: [ 'द्वितीया','ని, ను, ల, కూర్చి, గురించి' ],
@@ -119,6 +121,8 @@ var vibhaktiList =
           suffix: "अ",
           lingam: "पुलिंग",
           meaning: "రాముడు",
+          primary: true,
+          similar: ['कृष्ण', 'गोविंद', 'मुकुंद' ],
           vibhakti: {
               prathama: [ 'रामः', 'रामौ', 'रामाः' ],
               sambhodana: [ 'हे रामः', 'हे रामौ', 'हे रामा' ],
@@ -137,6 +141,8 @@ var vibhaktiList =
           suffix: "इ",
           lingam: "पुलिंग",
           meaning: "విష్నువు",
+          primary: true,
+          similar: [ '' ],
           vibhakti: {
               prathama: [ 'हरिः','हरी','हरयः' ],
               sambhodana: [ 'हे हरे','हे हरी','हे हरयः' ],
@@ -154,6 +160,8 @@ var vibhaktiList =
           suffix: "उ",
           lingam: "पुलिंग",
           meaning: "శివుడు",
+          primary: true,
+          similar: [ '' ],
           vibhakti: {
               prathama: [ 'शंभु','शंभू','शंभवः' ],
               sambhodana: [ 'हे शंभो','हे शंभू','हे शंभवः' ],
@@ -172,6 +180,8 @@ var vibhaktiList =
           suffix: "अ",
           lingam: "स्त्रिलिंग",
           meaning: "లక్ష్మి",
+          primary: true,
+          similar: [ "सीता","भामा","पद्मा" ],
           vibhakti: {
               prathama: [ 'रमा','रमे','रमाः' ],
               sambhodana: [ 'हे रमे','हे रमे','हे रमाः' ],
@@ -189,6 +199,8 @@ var vibhaktiList =
           suffix: "इ",
           lingam: "स्त्रिलिंग",
           meaning: "బుద్ధి",
+          primary: true,
+          similar: [ '' ],
           vibhakti: {
               prathama: [ 'मतिः','मती','मतयः' ],
               sambhodana: [ 'हे मते','हे मती','हे मतयः' ],
@@ -207,6 +219,8 @@ var vibhaktiList =
           suffix: "उ",
           lingam: "स्त्रिलिंग",
           meaning: "ఆవు",
+          primary: true,
+          similar: [ "तनु", "इषु", "पटु" ],
           vibhakti: {
               prathama: [ 'धेनुः','धेनू','धेनवः' ],
               sambhodana: [ 'हे धेनो','हे धेनू','हे धेनवः' ],
@@ -241,6 +255,8 @@ var vibhaktiList =
           suffix: "अ",
           lingam: "नपुंसकलिंग",
           meaning: "తెలివి",
+          primary: true,
+          similar: [ '' ],
           vibhakti: {
               prathama: [ 'ज्ञानम्','ज्ञाने','ज्ञानानि' ],
               sambhodana: [ 'हे ज्ञान','हे ज्ञाने','हे ज्ञानानि' ],
@@ -258,6 +274,8 @@ var vibhaktiList =
           suffix: "इ",
           lingam: "नपुंसकलिंग",
           meaning: "ఉదకము",
+          primary: true,
+          similar: [ '' ],
           vibhakti: {
               prathama: [ 'वारि','वारिणी','वारीणि' ],
               sambhodana: [ 'हे वारे / हे वारि','हे वारिणी','हे वारीणि' ],
@@ -275,6 +293,8 @@ var vibhaktiList =
           suffix: "उ",
           lingam: "नपुंसकलिंग",
           meaning: "తేనె",
+          primary: true,
+          similar: [ '' ],
           vibhakti: {
               prathama: [ 'मधु','मधुनी','मधूनि' ],
               sambhodana: [ 'हे मधो / हे मधु','हे मधुनि','हे मधूनि' ],

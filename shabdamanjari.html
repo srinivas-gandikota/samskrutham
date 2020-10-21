@@ -19,7 +19,7 @@ table.vib, .head {
 
 }
 
-table.vib td.vib, .padam {
+table.vib td.vib, .padam, .spadam {
   background-color: #00FFFF;
   font-size:40;
   font-spacing:400;
@@ -32,6 +32,14 @@ table.vib td.vib, .padam {
   //width:600
 }
 
+.spadam {
+  font-size:20;
+  cell-spacing:0;
+  letter-spacing:1pt;
+  padding:0 0 0 0;
+  border: 2px dotted grey;
+  align:left;
+}
 .plinga  {
   background-color: #F0F00F;
 }
@@ -85,6 +93,8 @@ table.vib td.vib, .padam {
     <option value="telugu" selected>Telugu</option>
     <option value="samskrutham">Samskrutham</option>
 </select>
+<input type=checkbox id=sel_simwords onChange=onShowWordsEvent()>
+<label id=simwords_head for=sel_simwords> Show Similar Shabdas </label>
 </div>
 
 <div id=vib_select> 
@@ -130,8 +140,8 @@ table.vib td.vib, .padam {
 
 
 <!-- TODO: Revisit this alignment for better placing word list -->
-<table border=0 align=left width=100%><tr>
-<td align=right valign=top  width=10%>
+<table border=0 align=left width=98%><tr>
+<td align=left valign=top  width=20%>
 <div id=word_display></div>
 </td>
 <td valign=top align=center width=80%>
@@ -147,6 +157,7 @@ table.vib td.vib, .padam {
 
 var curLang = "telugu";
 var prevVibhakti = "all";
+var displaySimilar = false;
 var styleMap = { "पुलिंग":"plinga", "स्त्रिलिंग":"slinga", "नपुंसकलिंग":"nlinga"}
 
 function displayVibhakthiTable(vibInfo) {
@@ -255,6 +266,7 @@ function updateLabels() {
     document.getElementById("swara_head").innerHTML = vibTranslation.anthya[0];
     document.getElementById("linga_head").innerHTML = vibTranslation.linga[0];
     document.getElementById("vib_head").innerHTML = vibTranslation.vibhakti[0];
+    document.getElementById("simwords_head").innerHTML = vibTranslation.ityadi[0];
 
     svibopts = document.getElementById("sel_vib").options
     for (x in svibopts) {
@@ -273,16 +285,26 @@ function updateLabels() {
     }
 }
 
-function onWordEvent(index) {
+function onWordEvent(index, simword) {
 
     vibinfo = vibhaktiList[index];
-    displayVibhakthiTable(vibinfo);
+    if (simword) {
+      genvibinfo = generateSimilarVibhakti(vibinfo, simword);
+      displayVibhakthiTable(genvibinfo);
+
+    } else {
+      displayVibhakthiTable(vibinfo);
+    }
 
     document.getElementById("sel_swara").value = vibinfo.suffix;
     document.getElementById("sel_lingam").value = vibinfo.lingam;
     document.getElementById("sel_vib").value="all"
     prevVibhakti = "all";
 
+}
+function onShowWordsEvent() {
+    displaySimilar = document.getElementById("sel_simwords").checked;
+    displayWords();
 }
 function displayWords()
 {
@@ -291,11 +313,26 @@ function displayWords()
     for ( x in vibhaktiList) {
       vibinfo = vibhaktiList[x];
       if (vibinfo.suffix != "") {
-        word_tbl += "<tr><td class='padam wordtip "+styleMap[vibinfo.lingam]+" '"
+        word_tbl += "<tr>"
+                +"<td class='padam wordtip "+styleMap[vibinfo.lingam]+" '"
                 +" onclick=onWordEvent('"+x+"') >"
                 +vibinfo.shabdam
                 +"<span> "+vibinfo.suffix+" "+headDesc.karanta+" "+ vibinfo.lingam+" </span>"
-                +"</td></tr>"
+                +"</td>"
+         if (displaySimilar && vibinfo.similar[0] != "") {
+             for (sim in vibinfo.similar) {
+               var simword = vibinfo.similar[sim];
+                word_tbl += "<td class='spadam wordtip "+styleMap[vibinfo.lingam]+" '"
+                    +" onclick=onWordEvent('"+x+"','"+simword+"') >"
+                    + simword
+                    +"<span> "+vibinfo.suffix+" "+headDesc.karanta+" "+ vibinfo.lingam+" </span>"
+                    +"</td>"
+
+             }
+         }
+
+
+         word_tbl += "</tr>"
       }
     }
     word_tbl += "</table>"
@@ -318,6 +355,104 @@ function initAll() {
 initAll();
 </script>
 
+<script>
+
+function applyWordDiff(src, mod, target) {
+
+  //walk through src and mod
+  //when comparison differs, 
+  // continue to walk through src and note changes -- To be removed
+  // continue to walk through mod and note changes -- To be added
+  //Walk through target, 
+  //  apply "removals" from tail in reverse path
+  // from this point, apply additions in forward path
+
+  var i=0;
+  while (src.charCodeAt(i) == mod.charCodeAt(i)) i++;
+
+  
+  var substract = "";
+  var si=i;
+  for (;si < src.length; si++) {
+      chcode = src.charCodeAt(si);
+      chstr  = String.fromCharCode(chcode);
+      substract += ""+chstr;
+  }
+
+  var append = "";
+  var ai=i;
+  for (;ai < mod.length; ai++) {
+      chcode = mod.charCodeAt(ai);
+      chstr  = String.fromCharCode(chcode);
+      append += ""+chstr;
+  }
+
+  si = substract.length - 1;
+  ti = target.length - 1;
+  //TODO: Rework substract logic to be more efficient
+  for (; si>=0; si--,ti--) {
+    if (substract.charCodeAt(si) == target.charCodeAt(ti)) {
+        chcode = target.charCodeAt(ti);
+        chstr  = String.fromCharCode(chcode);
+        reg = new RegExp(chstr+"$")
+        target = target.replace(reg, "")
+    } else {
+      //TODO: ERROR: we have a conflict with src and target
+      break;
+    }
+  }
+
+  var result = target + append;
+  return result;
+}
+function applyWordDiff2(src, mod, target) {
+
+  //Brute force: blindly find and replace src with target in mod
+  var schcode = src.charCodeAt(src.length-1);
+  var chstr = String.fromCharCode(schcode);
+
+  var tsrc = "";
+  var ttgt = "";
+  if (matraSwara.has(chstr)) {
+
+    var tchcode = target.charCodeAt(target.length-1);
+    if (schcode != tchcode) {
+      // inconsistent swaras, return original
+      return mod;
+    }
+
+    re = new RegExp(chstr+"$");
+    tsrc = src.replace(re, "");
+    ttgt = target.replace(re, "");
+
+  } else {
+    tsrc = src;
+    ttgt = target;
+  }
+
+  re2 = new RegExp(tsrc, "g");
+  var result = mod.replace(re2, ttgt);
+  return result;
+}
+function generateSimilarVibhakti(vibInfo, newWord) {
+  var nvib ={};
+  nvib["shabdam"] = newWord;
+  nvib["suffix"] = vibInfo.suffix;
+  nvib["lingam"] = vibInfo.lingam;
+  nvib["meaning"] = "";
+  nvib["primary"] = false;
+  nvib["vibhakti"] = {};//vibInfo.vibhakti;
+
+
+  for (vib in vibinfo.vibhakti) {
+    nvib.vibhakti[vib]=[];
+    for (i=0; i<3; i++)
+      nvib.vibhakti[vib][i] = applyWordDiff2(vibInfo.shabdam, vibInfo.vibhakti[vib][i], newWord);
+  }
+  return nvib;
+          
+}
+</script>
 
 </body>
 

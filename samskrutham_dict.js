@@ -142,7 +142,7 @@ var vibhaktiList =
           lingam: "पुलिंग",
           meaning: "విష్నువు",
           primary: true,
-          similar: [ '' ],
+          similar: [ 'कवि','अग्नि','रवि' ],
           vibhakti: {
               prathama: [ 'हरिः','हरी','हरयः' ],
               sambhodana: [ 'हे हरे','हे हरी','हे हरयः' ],
@@ -161,7 +161,7 @@ var vibhaktiList =
           lingam: "पुलिंग",
           meaning: "శివుడు",
           primary: true,
-          similar: [ '' ],
+          similar: [ 'विश्णु','भानु','विधु' ],
           vibhakti: {
               prathama: [ 'शंभु','शंभू','शंभवः' ],
               sambhodana: [ 'हे शंभो','हे शंभू','हे शंभवः' ],
@@ -200,7 +200,7 @@ var vibhaktiList =
           lingam: "स्त्रिलिंग",
           meaning: "బుద్ధి",
           primary: true,
-          similar: [ '' ],
+          similar: [ 'रुचि','घृणि' ],
           vibhakti: {
               prathama: [ 'मतिः','मती','मतयः' ],
               sambhodana: [ 'हे मते','हे मती','हे मतयः' ],
@@ -256,7 +256,7 @@ var vibhaktiList =
           lingam: "नपुंसकलिंग",
           meaning: "తెలివి",
           primary: true,
-          similar: [ '' ],
+          similar: [ 'धन','फल' ],
           vibhakti: {
               prathama: [ 'ज्ञानम्','ज्ञाने','ज्ञानानि' ],
               sambhodana: [ 'हे ज्ञान','हे ज्ञाने','हे ज्ञानानि' ],
@@ -275,7 +275,7 @@ var vibhaktiList =
           lingam: "नपुंसकलिंग",
           meaning: "ఉదకము",
           primary: true,
-          similar: [ '' ],
+          similar: [ 'पादपाणि','हरहरि' ],
           vibhakti: {
               prathama: [ 'वारि','वारिणी','वारीणि' ],
               sambhodana: [ 'हे वारे / हे वारि','हे वारिणी','हे वारीणि' ],
@@ -294,7 +294,7 @@ var vibhaktiList =
           lingam: "नपुंसकलिंग",
           meaning: "తేనె",
           primary: true,
-          similar: [ '' ],
+          similar: [ 'अंबु' ],
           vibhakti: {
               prathama: [ 'मधु','मधुनी','मधूनि' ],
               sambhodana: [ 'हे मधो / हे मधु','हे मधुनि','हे मधूनि' ],

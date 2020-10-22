@@ -96,6 +96,8 @@ table.vib td.vib, .padam, .spadam {
 </select>
 <input type=checkbox id=sel_simwords onChange=onShowWordsEvent()>
 <label id=simwords_head for=sel_simwords> Show Similar Shabdas </label>
+<input type=checkbox id=sel_skeleton onChange=onSkeletonEvent()>
+<label id=skeleton_head for=sel_skeleton> Show Vibhakti Template </label>
 <input type=button value="Don't Try" onclick=displacePage()>
 </div>
 
@@ -160,8 +162,14 @@ table.vib td.vib, .padam, .spadam {
 var curLang = "telugu";
 var prevVibhakti = "all";
 var displaySimilar = false;
+var displaySkeleton = false;
 var styleMap = { "पुलिंग":"plinga", "स्त्रिलिंग":"slinga", "नपुंसकलिंग":"nlinga"}
 
+function transformVibhakti(shabda, vibhakti, newShabda) {
+    if (displaySkeleton)
+      return generateVibhaktiSkeleton(shabda, vibhakti, "X ");
+    return vibhakti;
+}
 function displayVibhakthiTable(vibInfo) {
     var headDesc = vibhaktiDescription[curLang];
     var vib_head = "<span class=head>" 
@@ -182,7 +190,7 @@ function displayVibhakthiTable(vibInfo) {
         //"<td>"+vibhakti[vib][0]+"</td><td>"+vibhakti[vib][1]+"</td><td>"+vibhakti[vib][2]+"</td></tr>";
         for (i=0; i<3; i++) {
             tbl_str += "<td class='vib wordtip "+styleMap[vibInfo.lingam]+" '>"
-                    +vibhakti[vib][i]
+                    + transformVibhakti(vibInfo.shabdam, vibhakti[vib][i])
                     +"<span> "+vibhaktiExample[vib][i]+"</span>"
                     +" </td>";
         }
@@ -205,7 +213,7 @@ function getVibhakthiRow(vibInfo, selectedVibhakti) {
     var vibhaktiExample = getVibhakthiExamples(vibInfo.shabdam).vibhakti;
     for (i=0; i<3; i++) {
         row_str += "<td class='padam wordtip "+styleMap[vibInfo.lingam]+" '>"
-                + vibInfo.vibhakti[selectedVibhakti][i]
+                + transformVibhakti(vibInfo.shabdam, vibInfo.vibhakti[selectedVibhakti][i])
                 + "<span>"+vibhaktiExample[selectedVibhakti][i]+"</span>"
                 +"</td>";
     }
@@ -279,6 +287,7 @@ function updateLabels() {
     document.getElementById("linga_head").innerHTML = vibTranslation.linga[0];
     document.getElementById("vib_head").innerHTML = vibTranslation.vibhakti[0];
     document.getElementById("simwords_head").innerHTML = vibTranslation.ityadi[0];
+    document.getElementById("skeleton_head").innerHTML = vibTranslation.skeleton[0];
 
     svibopts = document.getElementById("sel_vib").options
     for (x in svibopts) {
@@ -296,7 +305,12 @@ function updateLabels() {
           slangopts[x].innerHTML = vibTranslation[val][0];
     }
 }
+function onSkeletonEvent() {
+   displaySkeleton = document.getElementById("sel_skeleton").checked;
+   onUserSelection();
+}
 
+/******************** Word Events ******************/
 function onWordEvent(index, simword) {
 
     vibinfo = vibhaktiList[index];
@@ -365,9 +379,8 @@ function initAll() {
 }
 
 initAll();
-</script>
 
-<script>
+/************* Auto-generate Vibhaktis ************/
 
 function applyWordDiff(src, mod, target) {
 
@@ -464,11 +477,31 @@ function generateSimilarVibhakti(vibInfo, newWord) {
   return nvib;
           
 }
+
+function generateVibhaktiSkeleton(src, mod, replace) {
+
+  var schcode = src.charCodeAt(src.length-1);
+  var chstr = String.fromCharCode(schcode);
+
+  if (matraSwara.has(chstr)) {
+    re = new RegExp(chstr+"$");
+    src = src.replace(re, "");
+    //ttgt = target.replace(re, "");
+  }
+
+  if (!replace) replace = "_ "
+  re2 = new RegExp(src, "g");
+  var result = mod.replace(re2, replace);
+  return result;
+
+}
+
 </script>
 
 
 <script>
 
+/**************** Transliterate Devanagari Unicode to Telugu Unicode charset *************/
 function teluguDisplacement(inStr) {
   var outStr = "";
   var tmagic = 768;
